@@ -163,7 +163,7 @@ function Individual() {
                 </TableHead>
                   <TableBody>
                     {Plants.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                    <TableRow component={Link} href="/notifications"
+                    <TableRow component={Link} style={{textDecoration: 'none'}} href="/notifications"
                       key={row.name}
                     >
                       <TableCell >

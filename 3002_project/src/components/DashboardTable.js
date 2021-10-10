@@ -118,7 +118,7 @@ function DashboardTable() {
             </TableHead>
             <TableBody>
               {Plants.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-            <TableRow component={Link} href="/individual"
+            <TableRow component={Link} style={{textDecoration: 'none'}} href="/individual"
                   key={row.name} 
                 >
                   <TableCell > 
