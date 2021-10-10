@@ -31,7 +31,18 @@ const useStyles = makeStyles((theme) => ({
     },
     page:{
         alignContent:'right'
-    }
+    },
+    priority: {
+      fontWeight: 'bold',
+      color:'white',
+      fontSize: '0.75rem',
+      backgroundColor: 'grey',
+      borderRadius: 15,
+      padding:'3px 10px',
+      display: 'inline-block',
+      textAlign: 'center'
+
+  } 
 }));
 
 let suggestion = ['Needs Watering', 'Needs Sunlight', 'Needs Fertilising'];
