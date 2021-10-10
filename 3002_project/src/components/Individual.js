@@ -9,6 +9,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
+import {Link} from '@mui/material';
 import {TextField, CardHeader, Tab, Tabs} from '@mui/material/';
 import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,IconButton,Select,MenuItem} from '@mui/material/';
 import TableFooter from '@mui/material/TableFooter';
@@ -162,7 +163,7 @@ function Individual() {
                 </TableHead>
                   <TableBody>
                     {Plants.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                    <TableRow
+                    <TableRow component={Link} href="/notifications"
                       key={row.name}
                     >
                       <TableCell >

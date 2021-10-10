@@ -9,6 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Grid, Typography } from '@mui/material';
 import {Avatar} from '@mui/material';
+import {Link} from '@mui/material';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import Container from '@mui/material/Container';
@@ -117,7 +118,7 @@ function DashboardTable() {
             </TableHead>
             <TableBody>
               {Plants.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                <TableRow
+            <TableRow component={Link} href="/individual"
                   key={row.name} 
                 >
                   <TableCell > 
