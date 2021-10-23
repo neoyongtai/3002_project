@@ -14,7 +14,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 // This section will help you get a list of all the records.
 recordRoutes.route("/record").get(function (req, res) {
-  let db_connect = dbo.getDb("userdb");
+  let db_connect = dbo.getDb("plantdb");
   db_connect
     .collection("users")
     .find({})
@@ -29,7 +29,7 @@ recordRoutes.route("/record/:id").get(function (req, res) {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId( req.params.id )};
   db_connect
-      .collection("users")
+      .collection("plants")
       .findOne(myquery, function (err, result) {
         if (err) throw err;
         res.json(result);
@@ -40,11 +40,11 @@ recordRoutes.route("/record/:id").get(function (req, res) {
 recordRoutes.route("/record/add").post(function (req, response) {
   let db_connect = dbo.getDb();
   let myobj = {
-    person_name: req.body.username,
-    person_position: req.body.email,
-    person_level: req.body.password,
+    person_name: req.body.plantName,
+    person_position: req.body.plantAge,
+    person_level: req.body.plantSpecies,
   };
-  db_connect.collection("users").insertOne(myobj, function (err, res) {
+  db_connect.collection("plants").insertOne(myobj, function (err, res) {
     if (err) throw err;
     response.json(res);
   });
@@ -56,13 +56,13 @@ recordRoutes.route("/update/:id").post(function (req, response) {
   let myquery = { _id: ObjectId( req.params.id )};
   let newvalues = {
     $set: {
-        person_name: req.body.username,
-        person_position: req.body.email,
-        person_level: req.body.password,
+      person_name: req.body.plantName,
+      person_position: req.body.plantAge,
+      person_level: req.body.plantSpecies,
     },
   };
   db_connect
-    .collection("users")
+    .collection("plants")
     .updateOne(myquery, newvalues, function (err, res) {
       if (err) throw err;
       console.log("1 document updated");
@@ -74,7 +74,7 @@ recordRoutes.route("/update/:id").post(function (req, response) {
 recordRoutes.route("/:id").delete((req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId( req.params.id )};
-  db_connect.collection("users").deleteOne(myquery, function (err, obj) {
+  db_connect.collection("plants").deleteOne(myquery, function (err, obj) {
     if (err) throw err;
     console.log("1 document deleted");
     response.status(obj);
