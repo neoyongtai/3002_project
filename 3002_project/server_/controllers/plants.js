@@ -33,7 +33,18 @@ export const updatePlant = async (req, res) => {
 
     if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No plant with such id');
 
-    const updatedPlant = await PlantInfo.findByIdAndUpdate(_id, plant, { new: true });
+
+    const updatedPlant = await PlantInfo.findByIdAndUpdate(_id, { ...plant, _id }, { new: true });
 
     res.json(updatedPlant)
+}
+
+export const deletePlant = async (req, res) => {
+    const { id } = req.params;
+
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No plant with such id');
+
+    await PlantInfo.findByIdAndRemove(id);
+
+    res.json({ message: 'Plant deleted successfully '})
 }
