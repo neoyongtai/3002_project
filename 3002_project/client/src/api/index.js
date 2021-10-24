@@ -1,10 +1,8 @@
 import axios from 'axios';
 
-const getAllUrl = 'http://localhost:5000/plants';
-const createUrl = 'http://localhost:5000/plant/add';
-const updateUrl = 'http://localhost:5000//plant/:id';
+const url = 'http://localhost:5000/plants';
 
 
-export const fetchPlants = () => axios.get(getAllUrl);
-export const createPlant = (newPlant) => axios.post(createUrl, newPlant);
-export const updatePlant = (id, updatedPlant) => axios.patch(`${updateUrl}`, updatedPlant);
+export const fetchPlants = () => axios.get(url);
+export const createPlant = (newPlant) => axios.post(url, newPlant);
+export const updatePlant = (id, updatedPlant) => axios.patch(`${url}/${id}`, updatedPlant);
