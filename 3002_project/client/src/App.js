@@ -9,13 +9,15 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getPlants } from './actions/plants';
 import { getNotifications } from './actions/notifications';
+import { getMeasurements } from './actions/measurements';
 
 const App = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPlants());
-    dispatch(getNotifications())
+    dispatch(getNotifications());
+    dispatch(getMeasurements());
   }, [dispatch]);
 
   return (

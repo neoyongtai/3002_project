@@ -10,3 +10,8 @@ export const updatePlant = (id, updatedPlant) => axios.patch(`${url}/${id}`, upd
 const notifurl = 'http://localhost:5000/plants/notifications';
 
 export const fetchNotifications = () => axios.get(notifurl);
+
+const measurementurl = 'http://localhost:5000/plants/measurements';
+
+export const fetchMeasurements = () => axios.get(measurementurl);
+

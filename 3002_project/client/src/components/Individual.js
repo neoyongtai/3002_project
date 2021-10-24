@@ -85,6 +85,7 @@ const Input = styled('input')({
 
 function Individual(plant, setCurrentId) {
   const notifications = useSelector((state) => state.notifications);
+  const measurements = useSelector((state) => state.measurements);
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -272,20 +273,22 @@ function Individual(plant, setCurrentId) {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {rows.map((row) => (
+                        {!measurements.length ? <CircularProgress /> : (
+                      measurements.map((measurement) => (
                             <TableRow
-                              key={row.height}
+                              key={measurement.height}
                               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                               <TableCell component="th" scope="row">
-                                {row.height}
+                                {measurement.height}
                               </TableCell>
-                              <TableCell align="right">{row.leave_color}</TableCell>
-                              <TableCell align="right">{row.exposure}</TableCell>
-                              <TableCell align="right">{row.temperature}</TableCell>
-                              <TableCell align="right">{row.humidity}</TableCell>
+                              <TableCell align="right">{measurement.leafColor}</TableCell>
+                              <TableCell align="right">{measurement.exposure}</TableCell>
+                              <TableCell align="right">{measurement.temperature}</TableCell>
+                              <TableCell align="right">{measurement.humidity}</TableCell>
                             </TableRow>
-                          ))}
+                          ))
+                         )}
                         </TableBody>
                       </Table>
                     </TableContainer>
