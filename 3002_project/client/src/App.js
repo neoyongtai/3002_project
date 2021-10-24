@@ -8,12 +8,14 @@ import { Route, BrowserRouter as Router } from "react-router-dom";
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getPlants } from './actions/plants';
+import { getNotifications } from './actions/notifications';
 
 const App = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPlants());
+    dispatch(getNotifications())
   }, [dispatch]);
 
   return (

@@ -19,6 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 
+
 const useStyles = makeStyles((theme) => ({
     table:{
         minWidth: 650,
@@ -120,7 +121,7 @@ function DashboardTable() {
                         <TableCell > 
                           <Grid container>
                             <Grid item lg = {6}>
-                                <Button color="primary" href="/create" onClick={() => {setCurrentId(plant._id)}}>
+                                <Button color="primary" href={`/create/:${currentId}`} onClick={() => {setCurrentId(plant._id)}}>
                                     <Edit />
                                 </Button>
                             </Grid>

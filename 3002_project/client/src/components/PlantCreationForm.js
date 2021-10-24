@@ -1,19 +1,34 @@
 import { TextField, Button, Typography, Paper } from '@mui/material';
 import FileBase from 'react-file-base64';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { createPlant } from '../actions/plants';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPlant, updatePlant } from '../actions/plants';
+import { RrowserRouter as Router, Link, Route, useParams } from 'react-router-dom';
 
 const PlantCreationForm = () => {
+    
+    const { currentId } = useParams();
 
     const [plantData, setPlantData] = useState({plantName: '', plantAge: 0, plantSpecies: '', plantImage: ''});
     const dispatch = useDispatch();
+    const plant = useSelector((state) => currentId ? state.plants.find((p) => p._id === currentId) : null);
+
+    useEffect(() => {
+        if(plant) setPlantData(plant); 
+    }, [plant]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        dispatch(createPlant(plantData));
+        if(currentId) {
+            dispatch(updatePlant(currentId, plantData));
+        }
+        else {
+            dispatch(createPlant(plantData));
+        }
     }
+
+    console.log(currentId);
 
     const clear = () => {
 

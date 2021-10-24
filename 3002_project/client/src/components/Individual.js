@@ -17,6 +17,9 @@ import TablePagination from '@mui/material/TablePagination';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import houseplant from '../images/houseplant.jpg';
+import moment from 'moment';
+import { useSelector } from 'react-redux';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 // Data 
@@ -81,6 +84,7 @@ const Input = styled('input')({
   });
 
 function Individual(plant, setCurrentId) {
+  const notifications = useSelector((state) => state.notifications);
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -93,6 +97,8 @@ function Individual(plant, setCurrentId) {
       setRowsPerPage(+event.target.value);
       setPage(0);
   };
+
+  console.log(notifications);
 
     return (
         <Container className={classes.Container}>
@@ -174,60 +180,48 @@ function Individual(plant, setCurrentId) {
                   </TableRow>
                 </TableHead>
                   <TableBody>
-                    {Plants.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                    <TableRow component={Link} style={{textDecoration: 'none'}} href="/notifications"
-                      key={row.name}
-                    >
+                  {!notifications.length ? <CircularProgress /> : (
+                    notifications.map((notification) => (
+                    <TableRow component={Link} style={{textDecoration: 'none'}}>
                       <TableCell >
                           <Typography fontWeight = 'bold' color = '#2a2a2c'>
-                              {row.Suggestion}
+                              {notification.suggestionTitle}
                           </Typography>
-                          <Typography color ='textSecondary' variant = 'body2' >{row.Reason} </Typography>
+                          <Typography color ='textSecondary' variant = 'body2' >{notification.suggestionSubText} </Typography>
                       </TableCell>
                       <TableCell >
                           <Typography fontWeight = 'bold' color = '#2a2a2c'>
-                              {row.Status}
+                              {notification.status}
                           </Typography>
-                          <Typography color ='textSecondary' variant = 'body2' >{'on 24.05.2019'} </Typography>
                       </TableCell>
                       <TableCell >
                           <Typography fontWeight = 'bold' color = '#2a2a2c'>
-                              {row.Date}
+                              {notification.date}
                           </Typography>
-                          <Typography color ='textSecondary' variant = 'body2'>{'5.00 PM'} </Typography>
                       </TableCell>
                       <TableCell >
                           <Typography
                             className={classes.priority}
                             style={{
                                 backgroundColor:
-                                ((row.Priority === 'HIGH' && 'red') ||
-                                (row.Priority === 'MEDIUM' && 'orange') ||
-                                (row.Priority === 'LOW' && 'green'))
+                                ((notification.priority === 'HIGH' && 'red') ||
+                                (notification.priority === 'MEDIUM' && 'orange') ||
+                                (notification.priority === 'LOW' && 'green'))
                             }}
-                            >{row.Priority}
+                            >{notification.priority}
                           </Typography>
                       </TableCell>
                       <TableCell >
                         <Grid container>
                         <Grid item lg = {10}>
-                            <Typography fontWeight = 'bold' color = '#2a2a2c'>{row.PlantName} </Typography>
+                            <Typography fontWeight = 'bold' color = '#2a2a2c'>{notification.plantName} </Typography>
                         </Grid>
                         </Grid>
                       </TableCell>
                     </TableRow>
-                  ))}
+                    ))
+                  )}
                   </TableBody>
-                  <TableFooter>
-                  <TablePagination
-                      rowsPerPageOptions={[5, 10, 15]}
-                      component="div"
-                      count={Plants.length}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      onPageChange={handleChangePage}
-                      onRowsPerPageChange={handleChangeRowsPerPage}/>
-                  </TableFooter>
               </Table>
             </TableContainer>
             <br/>
