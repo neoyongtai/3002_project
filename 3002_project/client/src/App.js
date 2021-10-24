@@ -3,15 +3,19 @@ import SignUp from './components/SignUp';
 import Dashboard from './components/DashBoard';
 import Individual from './components/Individual';
 import Notification from './components/Notifications';
-
-// set up
-const express = require("express");
-const mongoose = require("mongoose");
-require("dotenv").config();
-
+import PlantCreationForm from './components/PlantCreationForm';
 import { Route, BrowserRouter as Router } from "react-router-dom";
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getPlants } from './actions/plants';
 
 const App = () => {
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getPlants());
+  }, [dispatch]);
+
   return (
     <Router>
       <Route path="/" exact component={SignIn} />
@@ -19,20 +23,9 @@ const App = () => {
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/individual" component={Individual} />
       <Route path='/notifications' component={Notification} />
+      <Route path='/create' component={PlantCreationForm} />
     </Router>
   );
 }
 
 export default App;
-
-/*
-const app = express();
-app.use(express.json());
-
-const port = 3001;
-const uri = process.env.MONGODB_CONNECTION_STR;
-
-app.listen(port, () => {
-  console.log('App is listening at http://localhost${port}')
-})
-*/

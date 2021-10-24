@@ -80,19 +80,20 @@ const Input = styled('input')({
     display: 'none',
   });
 
-function Individual() {
+function Individual(plant, setCurrentId) {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
+      setPage(newPage);
+  };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
+  const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+  };
+
     return (
         <Container className={classes.Container}>
             <Box sx={{ flexGrow: 1 }}>

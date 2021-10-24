@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import {makeStyles} from '@mui/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,29 +8,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Grid, Typography } from '@mui/material';
-import {Avatar} from '@mui/material';
-import {Link} from '@mui/material';
+import {Avatar, Link, Button, Grid, Typography} from '@mui/material';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
-
-//fake data
-let status = ['Needs Watering','Needs Sunlight', 'Needs Fertilising'];
-let priority = ['HIGH', 'LOW', 'MEDIUM'];
-let plantName=['Salad Leaves','Radish' , 'Potatoes', 'Peas', 'Spring Onion', 'Onions',
-'Garlic', 'tomatoes','Spinach','Lettuce'];
-let date = 'May 28, 2021';
-let Plants = [];
-for (let i = 0; i< plantName.length; i++) {
-    Plants[i] = {
-        PlantName : plantName[i],
-        Status : status[Math.floor(Math.random()* status.length)],
-        Date : date,
-        Priority: priority[Math.floor(Math.random()* priority.length)],
-    }
-};
+import CircularProgress from '@mui/material/CircularProgress';
+import Edit from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import moment from 'moment';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     table:{
@@ -42,15 +30,6 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 50,
         maxWidth: 1000
     },
-    // tableHeaderCell: {
-    //     fontWeight:'bold',
-    //     color : 'grey'
-    // },
-    // subText: {
-    //     fontSize: 12,
-    //     color :'#c8cad1',
-    //     fontWeight: 'bold',
-    // }, 
     priority: {
         fontWeight: 'bold',
         color:'white',
@@ -68,19 +47,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function DashboardTable() {
+    const plants = useSelector((state) => state.plants);
+    const [currentId, setCurrentId] = useState(null);
     const classes = useStyles();
-
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
 
     return (
         <TableContainer component={Paper} className = {classes.tableContainer}>
@@ -96,12 +65,17 @@ function DashboardTable() {
               <TableRow>
                 <TableCell>
                     <Typography fontWeight = 'bold' color = '#9e9fa4'>
-                        Plant Details
+                        Name
                     </Typography>
                 </TableCell>
                 <TableCell>
                     <Typography fontWeight = 'bold' color = '#9e9fa4'>
-                        Status
+                        Age
+                    </Typography>
+                </TableCell>
+                <TableCell>
+                    <Typography fontWeight = 'bold' color = '#9e9fa4'>
+                        Species
                     </Typography>
                 </TableCell>
                 <TableCell>
@@ -109,66 +83,58 @@ function DashboardTable() {
                         Date
                     </Typography>
                 </TableCell>
-                <TableCell>
-                    <Typography fontWeight = 'bold' color = '#9e9fa4'>
-                        Priority
-                    </Typography>
-                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {Plants.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-            <TableRow component={Link} style={{textDecoration: 'none'}} href="/individual"
-                  key={row.name} 
-                >
-                  <TableCell > 
-                    <Grid container>
-                    <Grid item lg = {2}>
-                        <Avatar alt ={row.PlantName} src= '.'/> 
-                    </Grid>
-                    <Grid item lg = {10}>
-                        <Typography fontWeight = 'bold' color = '#2a2a2c'>{row.PlantName} </Typography> 
-                        <Typography color ='textSecondary' variant = 'body2'>{'updated 5 days ago'}</Typography> 
-                    </Grid>
-                    </Grid>
-                  </TableCell>
-                  <TableCell >
-                      <Typography fontWeight = 'bold' color = '#2a2a2c'>
-                          {row.Status}
-                      </Typography>
-                      <Typography color ='textSecondary' variant = 'body2' >{'on 24.05.2019'} </Typography> 
-                  </TableCell>
-                  <TableCell >
-                      <Typography fontWeight = 'bold' color = '#2a2a2c'>
-                          {row.Date}
-                      </Typography>
-                      <Typography color ='textSecondary' variant = 'body2'>{'5.00 PM'} </Typography> 
-                  </TableCell>
-                  <TableCell >
-                      <Typography 
-                        className={classes.priority}
-                        style={{
-                            backgroundColor:
-                            ((row.Priority === 'HIGH' && 'red') ||
-                            (row.Priority === 'MEDIUM' && 'orange') ||
-                            (row.Priority === 'LOW' && 'green'))
-                        }}
-                        >{row.Priority}
-                      </Typography>
-                  </TableCell>
-                </TableRow>
-              ))}
+                 {!plants.length ? <CircularProgress /> : (
+                    plants.map((plant) => (
+                        <TableRow component={Link} style={{textDecoration: 'none'}} href="/individual" key={plant._id}>
+                        <TableCell > 
+                          <Grid container>
+                            <Grid item lg = {12}>
+                                <Typography fontWeight = 'bold' color = '#2a2a2c'>{plant.plantName} </Typography> 
+                            </Grid>
+                          </Grid>
+                        </TableCell>
+                        <TableCell > 
+                          <Grid container>
+                            <Grid item lg = {12}>
+                                <Typography fontWeight = 'bold' color = '#2a2a2c'>{plant.plantAge} </Typography> 
+                            </Grid>
+                          </Grid>
+                        </TableCell>
+                        <TableCell > 
+                          <Grid container>
+                            <Grid item lg = {12}>
+                                <Typography fontWeight = 'bold' color = '#2a2a2c'>{plant.plantSpecies} </Typography> 
+                            </Grid>
+                          </Grid>
+                        </TableCell>
+                        <TableCell > 
+                          <Grid container>
+                            <Grid item lg = {12}>
+                                <Typography fontWeight = 'bold' color = '#2a2a2c'>{moment(plant.createdAt).fromNow()} </Typography> 
+                            </Grid>
+                          </Grid>
+                        </TableCell>
+                        <TableCell > 
+                          <Grid container>
+                            <Grid item lg = {6}>
+                                <Button color="primary" href="/create" onClick={() => {setCurrentId(plant._id)}}>
+                                    <Edit />
+                                </Button>
+                            </Grid>
+                            <Grid item lg = {6}>
+                                <Button color="secondary" onClick={() => {}}>
+                                    <DeleteIcon />
+                                </Button>
+                            </Grid>
+                          </Grid>
+                        </TableCell>
+                      </TableRow>
+                    ))
+              )}
             </TableBody>
-            <TableFooter>
-            <TablePagination
-                rowsPerPageOptions={[5, 10, 15]}
-                component="div"
-                count={Plants.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}/> 
-            </TableFooter>
           </Table>
         </TableContainer>
         
